@@ -1,0 +1,68 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    overflow: auto;
+}
+
+form, #testArea {
+    margin-bottom: 20px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+button.delete, button.delete-list {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button.delete:hover, button.delete-list:hover {
+    background-color: darkred;
+}
+
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#listContainer {
+    max-height: 200px; /* 필요에 따라 높이를 조절 */
+    overflow-y: auto;
+    border: 1px solid #ccc; /* 선택 사항: 가시성을 위해 테두리 추가 */
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+#wordList {
+    max-height: 300px; /* 필요에 따라 높이를 조절 */
+    overflow-y: auto;
+    border: 1px solid #ccc; /* 선택 사항: 가시성을 위해 테두리 추가 */
+    padding: 10px;
+}

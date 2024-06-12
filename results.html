@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시험 결과</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>시험 결과</h1>
+        <p id="score"></p>
+        <h2>틀린 단어</h2>
+        <ul id="incorrectWordsList"></ul>
+        <button onclick="window.location.href='index.html'">다시 시작</button>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const correctCount = parseInt(params.get('correctCount'));
+            const totalCount = parseInt(params.get('totalCount'));
+            const incorrectWords = JSON.parse(params.get('incorrectWords'));
+
+            const score = document.getElementById('score');
+            const incorrectWordsList = document.getElementById('incorrectWordsList');
+
+            score.textContent = `맞은 문제: ${correctCount} / ${totalCount}`;
+
+            incorrectWords.forEach(word => {
+                const li = document.createElement('li');
+                li.textContent = `${word.word} - ${word.meaning}`;
+                incorrectWordsList.appendChild(li);
+            });
+        });
+    </script>
+</body>
+</html>
