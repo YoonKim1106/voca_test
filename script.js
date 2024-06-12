@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const testButton = document.getElementById('testButton');
     const testArea = document.getElementById('testArea');
     const testWord = document.getElementById('testWord');
+    const remainingCount = document.getElementById('remainingCount');
     const userAnswer = document.getElementById('userAnswer');
     const submitAnswer = document.getElementById('submitAnswer');
     const result = document.getElementById('result');
@@ -81,6 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return array;
     };
 
+    const updateRemainingCount = () => {
+        remainingCount.textContent = `남은 문제: ${shuffledWords.length - currentWordIndex}`;
+    };
+
     const displayNextWord = () => {
         if (currentWordIndex < shuffledWords.length) {
             testWord.textContent = shuffledWords[currentWordIndex].word;
@@ -88,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             result.textContent = '';
             userAnswer.value = '';
             userAnswer.focus();
+            updateRemainingCount();
         } else {
             const params = new URLSearchParams();
             params.append('correctCount', correctCount);

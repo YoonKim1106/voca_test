@@ -12,6 +12,14 @@
         <p id="score"></p>
         <h2>틀린 단어</h2>
         <ul id="incorrectWordsList"></ul>
+        <h2>순위 등록</h2>
+        <form id="rankForm">
+            <label for="playerName">이름:</label>
+            <input type="text" id="playerName" required>
+            <button type="submit">등록</button>
+        </form>
+        <h2>순위</h2>
+        <ul id="rankList"></ul>
         <button onclick="window.location.href='index.html'">다시 시작</button>
     </div>
     <script>
@@ -23,6 +31,9 @@
 
             const score = document.getElementById('score');
             const incorrectWordsList = document.getElementById('incorrectWordsList');
+            const rankForm = document.getElementById('rankForm');
+            const playerNameInput = document.getElementById('playerName');
+            const rankList = document.getElementById('rankList');
 
             score.textContent = `맞은 문제: ${correctCount} / ${totalCount}`;
 
@@ -31,6 +42,54 @@
                 li.textContent = `${word.word} - ${word.meaning}`;
                 incorrectWordsList.appendChild(li);
             });
+
+            const getCurrentTime = () => {
+                return new Date().toLocaleString(); // 현재 시간을 로컬 형식으로 반환
+            };
+
+            const saveRank = (rank) => {
+                localStorage.setItem('rank', JSON.stringify(rank));
+            };
+
+            const loadRank = () => {
+                return JSON.parse(localStorage.getItem('rank')) || [];
+            };
+
+            const updateRankList = () => {
+                const rank = loadRank();
+                rankList.innerHTML = '';
+                rank.sort((a, b) => b.correctRate - a.correctRate);
+                rank.forEach((entry, index) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `${entry.name} - 정답률: ${entry.correctRate}% - 시간: ${entry.time}
+                                    <button onclick="window.location.href='incorrect.html?incorrectWords=${encodeURIComponent(JSON.stringify(entry.incorrectWords))}'">틀린 문제 보기</button>
+                                    <button onclick="deleteRank(${index})">삭제</button>`;
+                    rankList.appendChild(li);
+                });
+            };
+
+            window.deleteRank = (index) => {
+                if (confirm('이 순위를 삭제하시겠습니까?')) {
+                    const rank = loadRank();
+                    rank.splice(index, 1);
+                    saveRank(rank);
+                    updateRankList();
+                }
+            };
+
+            rankForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const playerName = playerNameInput.value;
+                const correctRate = ((correctCount / totalCount) * 100).toFixed(2);
+                const time = getCurrentTime();
+                const rank = loadRank();
+                rank.push({ name: playerName, correctRate: parseFloat(correctRate), time, incorrectWords });
+                saveRank(rank);
+                updateRankList();
+                playerNameInput.value = '';
+            });
+
+            updateRankList();
         });
     </script>
 </body>

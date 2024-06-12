@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>틀린 문제</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>틀린 문제</h1>
+        <ul id="incorrectWordsList"></ul>
+        <button onclick="window.location.href='results.html'">돌아가기</button>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const incorrectWords = JSON.parse(params.get('incorrectWords'));
+
+            const incorrectWordsList = document.getElementById('incorrectWordsList');
+
+            incorrectWords.forEach(word => {
+                const li = document.createElement('li');
+                li.textContent = `${word.word} - ${word.meaning}`;
+                incorrectWordsList.appendChild(li);
+            });
+        });
+    </script>
+</body>
+</html>
