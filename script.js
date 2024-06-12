@@ -11,7 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const userAnswer = document.getElementById('userAnswer');
     const submitAnswer = document.getElementById('submitAnswer');
     const result = document.getElementById('result');
-    
+    const exportButton = document.getElementById('exportButton');
+    const importButton = document.getElementById('importButton');
+    const importFile = document.getElementById('importFile');
+
     let lists = JSON.parse(localStorage.getItem('lists')) || {};
     let selectedList = null;
     let shuffledWords = [];
@@ -175,4 +178,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     updateListSelect();
+
+    // 데이터 내보내기
+    exportButton.addEventListener('click', () => {
+        const dataStr = JSON.stringify({ lists });
+        const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+        
+        const exportFileDefaultName = 'data.json';
+        
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
+    });
+
+    // 데이터 가져오기
+    importButton.addEventListener('click', () => {
+        importFile.click();
+    });
+
+    importFile.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            const data = JSON.parse(e.target.result);
+            if (data.lists) {
+                lists = data.lists;
+                saveLists();
+                updateListSelect();
+            } else {
+                alert('유효한 데이터 파일이 아닙니다.');
+            }
+        };
+
+        reader.readAsText(file);
+    });
 });
